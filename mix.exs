@@ -44,7 +44,7 @@ defmodule Protobuf.MixProject do
 
   defp package do
     [
-      maintainers: ["Evgeniy Evgrafov"],
+      maintainers: ["Evgeniy Abramov"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/kiopro/exproto"},
       files: ~w(mix.exs README.md lib config LICENSE priv/templates)
