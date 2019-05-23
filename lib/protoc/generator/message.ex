@@ -77,7 +77,9 @@ defmodule Protobuf.Protoc.Generator.Message do
     Enum.map_join(struct.oneof_decl ++ fields, ", ", fn f -> ":#{f.name}" end)
   end
 
-  def typespec_str([], []), do: ""
+  def typespec_str([], []) do
+    "  @type t :: %__MODULE__{}\n"
+  end
 
   def typespec_str(fields, oneofs) do
     longest_field = fields |> Enum.max_by(&String.length(&1[:name]))
@@ -196,31 +198,42 @@ defmodule Protobuf.Protoc.Generator.Message do
   defp label_name(2), do: "required"
   defp label_name(3), do: "repeated"
 
+  defp label_name(:LABEL_OPTIONAL), do: "optional"
+  defp label_name(:LABEL_REQUIRED), do: "required"
+  defp label_name(:LABEL_REPEATED), do: "repeated"
+
   defp default_value(_, ""), do: nil
   defp default_value(_, nil), do: nil
 
   defp default_value(type, value) do
+    # IO.inspect(type)
+
     val =
       cond do
-        type <= 2 ->
+        type in [2, :TYPE_FLOAT] ->
           case Float.parse(value) do
             {v, _} -> v
             :error -> value
           end
 
-        type <= 7 || type == 13 || (type >= 15 && type <= 18) ->
+        type in [
+          7, 13, 15, 16, 17, 18,
+          :TYPE_FIXED64, :TYPE_UINT32,
+          :TYPE_SFIXED32, :TYPE_SFIXED64,
+          :TYPE_SINT32, :TYPE_SINT64
+        ] ->
           case Integer.parse(value) do
             {v, _} -> v
             :error -> value
           end
 
-        type == 8 ->
+        type in [8, :TYPE_STRING] ->
           String.to_atom(value)
 
-        type == 9 || type == 12 ->
+        type in [9, 12, :TYPE_STRING, :TYPE_BYTES] ->
           value
 
-        type == 14 ->
+        type in [14, :TYPE_ENUM] ->
           String.to_atom(value)
 
         true ->

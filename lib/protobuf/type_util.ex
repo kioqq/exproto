@@ -18,6 +18,24 @@ defmodule Protobuf.TypeUtil do
   def number_to_atom(11), do: :message
   def number_to_atom(14), do: :enum
 
+  def number_to_atom(:TYPE_DOUBLE), do: :double
+  def number_to_atom(:TYPE_FLOAT), do: :float
+  def number_to_atom(:TYPE_INT64), do: :int64
+  def number_to_atom(:TYPE_UINT64), do: :uint64
+  def number_to_atom(:TYPE_INT32), do: :int32
+  def number_to_atom(:TYPE_FIXED64), do: :fixed64
+  def number_to_atom(:TYPE_FIXED32), do: :fixed64
+  def number_to_atom(:TYPE_BOOL), do: :bool
+  def number_to_atom(:TYPE_STRING), do: :string
+  def number_to_atom(:TYPE_BYTES), do: :bytes
+  def number_to_atom(:TYPE_UINT32), do: :uint32
+  def number_to_atom(:TYPE_SFIXED32), do: :sfixed32
+  def number_to_atom(:TYPE_SFIXED64), do: :sfixed64
+  def number_to_atom(:TYPE_SINT32), do: :sint32
+  def number_to_atom(:TYPE_SINT64), do: :sint64
+  def number_to_atom(:TYPE_MESSAGE), do: :message
+  def number_to_atom(:TYPE_ENUM), do: :enum
+
   def str_to_spec(1), do: "float"
   def str_to_spec(2), do: "float"
   def str_to_spec(3), do: "integer"

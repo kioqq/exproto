@@ -1,0 +1,38 @@
+syntax = "proto2";
+package TestPb;
+
+message EmptyStruct {
+}
+
+message User {
+  optional int32 id = 1;
+  required int32 id1 = 2;
+  repeated int32 id2 = 3;
+  required int64 id4 = 4;
+
+  required double id5 = 5;
+  required float id6 = 6;
+  required uint64 id7 = 7;
+  required fixed64 id8 = 8;
+  required fixed32 id9 = 9;
+  required bool id10 = 10;
+
+  required string id11 = 11;
+  required bytes id13 = 13;
+  required uint32 id14 = 14;
+  required sint32 id15 = 15;
+  required sint64 id16 = 16;
+
+  enum TestEnum {
+    VALUE1 = 1;
+    VALUE2 = 2;
+  }
+
+  message Test {
+    optional TestEnum enum = 1;
+    optional string path = 2 [default = "/reset_passcode/reset"];
+    optional string method = 3 [default = "post"];
+  }
+
+  // required group Id12 = 12;
+}
