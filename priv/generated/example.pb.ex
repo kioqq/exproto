@@ -12,21 +12,21 @@ defmodule TestPb.User do
   use Protobuf, syntax: :proto2
 
   @type t :: %__MODULE__{
-    id:   any,
-    id1:  any,
-    id2:  [any],
-    id4:  any,
-    id5:  any,
-    id6:  any,
-    id7:  any,
-    id8:  any,
-    id9:  any,
-    id10: any,
-    id11: any,
-    id13: any,
-    id14: any,
-    id15: any,
-    id16: any
+    id:   integer,
+    id1:  integer,
+    id2:  [integer],
+    id4:  integer,
+    id5:  float,
+    id6:  float,
+    id7:  non_neg_integer,
+    id8:  non_neg_integer,
+    id9:  non_neg_integer,
+    id10: boolean,
+    id11: String.t,
+    id13: String.t,
+    id14: non_neg_integer,
+    id15: integer,
+    id16: integer
   }
   defstruct [:id, :id1, :id2, :id4, :id5, :id6, :id7, :id8, :id9, :id10, :id11, :id13, :id14, :id15, :id16]
 
@@ -53,8 +53,8 @@ defmodule TestPb.User.Test do
 
   @type t :: %__MODULE__{
     enum:   any,
-    path:   any,
-    method: any
+    path:   String.t,
+    method: String.t
   }
   defstruct [:enum, :path, :method]
 

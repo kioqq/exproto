@@ -52,6 +52,25 @@ defmodule Protobuf.TypeUtil do
   def str_to_spec(17), do: "integer"
   def str_to_spec(18), do: "integer"
   def str_to_spec(14), do: "integer"
+
+  def str_to_spec(:TYPE_DOUBLE), do: "float"
+  def str_to_spec(:TYPE_FLOAT), do: "float"
+  def str_to_spec(:TYPE_INT64), do: "integer"
+  def str_to_spec(:TYPE_UINT64), do: "non_neg_integer"
+  def str_to_spec(:TYPE_INT32), do: "integer"
+  def str_to_spec(:TYPE_FIXED64), do: "non_neg_integer"
+  def str_to_spec(:TYPE_FIXED32), do: "non_neg_integer"
+  def str_to_spec(:TYPE_BOOL), do: "boolean"
+  def str_to_spec(:TYPE_STRING), do: "String.t"
+  def str_to_spec(:TYPE_BYTES), do: "String.t"
+  def str_to_spec(:TYPE_UINT32), do: "non_neg_integer"
+  def str_to_spec(:TYPE_SFIXED32), do: "integer"
+  def str_to_spec(:TYPE_SFIXED64), do: "integer"
+  def str_to_spec(:TYPE_SINT32), do: "integer"
+  def str_to_spec(:TYPE_SINT64), do: "integer"
+
+
+
   def str_to_spec(_), do: "any"
   def str_to_spec(11, type), do: "#{type}.t"
 end
