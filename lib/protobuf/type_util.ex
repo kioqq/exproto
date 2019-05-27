@@ -68,6 +68,7 @@ defmodule Protobuf.TypeUtil do
   def str_to_spec(:TYPE_SFIXED64), do: "integer"
   def str_to_spec(:TYPE_SINT32), do: "integer"
   def str_to_spec(:TYPE_SINT64), do: "integer"
+  def str_to_spec(:TYPE_ENUM), do: "integer"
 
 
 
