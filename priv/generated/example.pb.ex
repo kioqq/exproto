@@ -12,23 +12,24 @@ defmodule TestPb.User do
   use Protobuf, syntax: :proto2
 
   @type t :: %__MODULE__{
-    id:   integer,
-    id1:  integer,
-    id2:  [integer],
-    id4:  integer,
-    id5:  float,
-    id6:  float,
-    id7:  non_neg_integer,
-    id8:  non_neg_integer,
-    id9:  non_neg_integer,
-    id10: boolean,
-    id11: String.t,
-    id13: String.t,
-    id14: non_neg_integer,
-    id15: integer,
-    id16: integer
+    id:       integer(),
+    id1:      integer(),
+    id2:      [integer()],
+    id4:      integer(),
+    id5:      float(),
+    id6:      float(),
+    id7:      non_neg_integer(),
+    id8:      non_neg_integer(),
+    id9:      non_neg_integer(),
+    id10:     boolean(),
+    id11:     String.t(),
+    id13:     String.t(),
+    id14:     non_neg_integer(),
+    id15:     integer(),
+    id16:     integer(),
+    test_msg: TestPb.User.Test.t()
   }
-  defstruct [:id, :id1, :id2, :id4, :id5, :id6, :id7, :id8, :id9, :id10, :id11, :id13, :id14, :id15, :id16]
+  defstruct [:id, :id1, :id2, :id4, :id5, :id6, :id7, :id8, :id9, :id10, :id11, :id13, :id14, :id15, :id16, :test_msg]
 
   field :id, 1, optional: true, type: :int32
   field :id1, 2, required: true, type: :int32
@@ -45,6 +46,7 @@ defmodule TestPb.User do
   field :id14, 14, required: true, type: :uint32
   field :id15, 15, required: true, type: :sint32
   field :id16, 16, required: true, type: :sint64
+  field :test_msg, 17, required: true, type: TestPb.User.Test
 end
 
 defmodule TestPb.User.Test do
@@ -52,15 +54,15 @@ defmodule TestPb.User.Test do
   use Protobuf, syntax: :proto2
 
   @type t :: %__MODULE__{
-    enum:   any,
-    path:   String.t,
-    method: String.t
+    enum:   integer(),
+    path:   String.t(),
+    method: String.t()
   }
   defstruct [:enum, :path, :method]
 
   field :enum, 1, optional: true, type: TestPb.User.TestEnum
-  field :path, 2, optional: true, type: :string, default: :"/reset_passcode/reset"
-  field :method, 3, optional: true, type: :string, default: :post
+  field :path, 2, optional: true, type: :string, default: "/reset_passcode/reset"
+  field :method, 3, optional: true, type: :string, default: "post"
 end
 
 defmodule TestPb.User.TestEnum do

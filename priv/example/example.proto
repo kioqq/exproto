@@ -5,6 +5,13 @@ message EmptyStruct {
 }
 
 message User {
+
+  message Test {
+    optional TestEnum enum = 1;
+    optional string path = 2 [default = "/reset_passcode/reset"];
+    optional string method = 3 [default = "post"];
+  }
+
   optional int32 id = 1;
   required int32 id1 = 2;
   repeated int32 id2 = 3;
@@ -22,16 +29,11 @@ message User {
   required uint32 id14 = 14;
   required sint32 id15 = 15;
   required sint64 id16 = 16;
+  required Test test_msg = 17;
 
   enum TestEnum {
     VALUE1 = 1;
     VALUE2 = 2;
-  }
-
-  message Test {
-    optional TestEnum enum = 1;
-    optional string path = 2 [default = "/reset_passcode/reset"];
-    optional string method = 3 [default = "post"];
   }
 
   // required group Id12 = 12;
