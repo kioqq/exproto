@@ -130,6 +130,7 @@ defmodule Protobuf.Protoc.Generator.Message do
   end
 
   defp type_to_spec(11, type), do: TypeUtil.str_to_spec(11, type)
+  defp type_to_spec(:TYPE_MESSAGE, type), do: TypeUtil.str_to_spec(:TYPE_MESSAGE, type)
   defp type_to_spec(num, _), do: TypeUtil.str_to_spec(num)
 
   def get_fields(ctx, desc) do
@@ -227,14 +228,8 @@ defmodule Protobuf.Protoc.Generator.Message do
             :error -> value
           end
 
-        type in [8, :TYPE_STRING] ->
-          String.to_atom(value)
-
-        type in [9, 12, :TYPE_STRING, :TYPE_BYTES] ->
+        type in [9, 12, 14, 8, :TYPE_STRING, :TYPE_ENUM, :TYPE_STRING, :TYPE_BYTES] ->
           value
-
-        type in [14, :TYPE_ENUM] ->
-          String.to_atom(value)
 
         true ->
           nil
