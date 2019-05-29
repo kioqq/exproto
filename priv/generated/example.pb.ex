@@ -54,7 +54,7 @@ defmodule TestPb.User.Test do
   use Protobuf, syntax: :proto2
 
   @type t :: %__MODULE__{
-    enum:   integer,
+    enum:   integer(),
     path:   String.t(),
     method: String.t()
   }
