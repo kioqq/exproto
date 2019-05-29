@@ -207,7 +207,6 @@ defmodule Protobuf.Protoc.Generator.Message do
   defp default_value(_, nil), do: nil
 
   defp default_value(type, value) do
-    # IO.inspect(type)
 
     val =
       cond do
@@ -228,7 +227,10 @@ defmodule Protobuf.Protoc.Generator.Message do
             :error -> value
           end
 
-        type in [9, 12, 14, 8, :TYPE_STRING, :TYPE_ENUM, :TYPE_STRING, :TYPE_BYTES] ->
+        type in [14, :TYPE_ENUM] ->	
+          String.to_atom(value)
+
+        type in [9, 12, 8, :TYPE_STRING, :TYPE_STRING, :TYPE_BYTES] ->
           value
 
         true ->
