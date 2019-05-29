@@ -191,7 +191,7 @@ defmodule Protobuf.Protoc.Generator.Message do
   end
 
   defp field_options(f) do
-    opts = %{enum: f.type == 14, default: default_value(f.type, f.default_value)}
+    opts = %{enum: f.type == 14 || f.type == :TYPE_ENUM, default: default_value(f.type, f.default_value)}
     if f.options, do: merge_field_options(opts, f), else: opts
   end
 
