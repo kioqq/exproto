@@ -60,7 +60,7 @@ defmodule TestPb.User.Test do
   }
   defstruct [:enum, :path, :method]
 
-  field :enum, 1, optional: true, type: TestPb.User.TestEnum
+  field :enum, 1, optional: true, type: TestPb.User.TestEnum, enum: true
   field :path, 2, optional: true, type: :string, default: "/reset_passcode/reset"
   field :method, 3, optional: true, type: :string, default: "post"
 end

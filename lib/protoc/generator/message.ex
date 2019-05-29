@@ -112,8 +112,8 @@ defmodule Protobuf.Protoc.Generator.Message do
     String.pad_trailing("#{name}:", len + 1)
   end
 
-  defp fmt_type(%{opts: %{enum: true}, label: "repeated"}), do: "[integer]"
-  defp fmt_type(%{opts: %{enum: true}}), do: "integer"
+  defp fmt_type(%{opts: %{enum: true}, label: "repeated"}), do: "[integer()]"
+  defp fmt_type(%{opts: %{enum: true}}), do: "integer()"
 
   defp fmt_type(%{opts: %{map: true}, map: {{k_type, k_name}, {v_type, v_name}}}) do
     k_type = type_to_spec(k_type, k_name)
@@ -191,7 +191,7 @@ defmodule Protobuf.Protoc.Generator.Message do
   end
 
   defp field_options(f) do
-    opts = %{enum: f.type == 14, default: default_value(f.type, f.default_value)}
+    opts = %{enum: f.type == 14 || f.type == :TYPE_ENUM, default: default_value(f.type, f.default_value)}
     if f.options, do: merge_field_options(opts, f), else: opts
   end
 
