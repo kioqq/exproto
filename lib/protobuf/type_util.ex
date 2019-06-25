@@ -1,75 +1,60 @@
 defmodule Protobuf.TypeUtil do
-  def number_to_atom(1), do: :double
-  def number_to_atom(2), do: :float
-  def number_to_atom(3), do: :int64
-  def number_to_atom(4), do: :uint64
-  def number_to_atom(5), do: :int32
-  def number_to_atom(6), do: :fixed64
-  def number_to_atom(7), do: :fixed32
-  def number_to_atom(8), do: :bool
-  def number_to_atom(9), do: :string
-  def number_to_atom(10), do: :group
-  def number_to_atom(12), do: :bytes
-  def number_to_atom(13), do: :uint32
-  def number_to_atom(15), do: :sfixed32
-  def number_to_atom(16), do: :sfixed64
-  def number_to_atom(17), do: :sint32
-  def number_to_atom(18), do: :sint64
-  def number_to_atom(11), do: :message
-  def number_to_atom(14), do: :enum
+  require Record
+  
+  Record.defrecord(
+    :proto_type,
+    code: 0,
+    label: :DEFAULT_TYPE,
+    type: :default,
+    elixir_type: "any()"
+  )
 
-  def number_to_atom(:TYPE_DOUBLE), do: :double
-  def number_to_atom(:TYPE_FLOAT), do: :float
-  def number_to_atom(:TYPE_INT64), do: :int64
-  def number_to_atom(:TYPE_UINT64), do: :uint64
-  def number_to_atom(:TYPE_INT32), do: :int32
-  def number_to_atom(:TYPE_FIXED64), do: :fixed64
-  def number_to_atom(:TYPE_FIXED32), do: :fixed64
-  def number_to_atom(:TYPE_BOOL), do: :bool
-  def number_to_atom(:TYPE_STRING), do: :string
-  def number_to_atom(:TYPE_BYTES), do: :bytes
-  def number_to_atom(:TYPE_UINT32), do: :uint32
-  def number_to_atom(:TYPE_SFIXED32), do: :sfixed32
-  def number_to_atom(:TYPE_SFIXED64), do: :sfixed64
-  def number_to_atom(:TYPE_SINT32), do: :sint32
-  def number_to_atom(:TYPE_SINT64), do: :sint64
-  def number_to_atom(:TYPE_MESSAGE), do: :message
-  def number_to_atom(:TYPE_ENUM), do: :enum
+  @type t :: record(
+    :proto_type,
+    code: non_neg_integer(),
+    label: atom(),
+    type: atom(),
+    elixir_type: String.t() | :dynamic
+  )
+  defp proto_types(), do: [
+    proto_type(label: :TYPE_DOUBLE, code: 1, type: :double, elixir_type: "float()"),
+    proto_type(label: :TYPE_FLOAT, code: 2, type: :float, elixir_type: "float()"),
+    proto_type(label: :TYPE_INT64, code: 3, type: :int64, elixir_type: "integer()"),
+    proto_type(label: :TYPE_UINT64, code: 4, type: :uint64, elixir_type: "non_neg_integer()"),
+    proto_type(label: :TYPE_INT32, code: 5, type: :int32, elixir_type: "integer()"),
+    proto_type(label: :TYPE_FIXED64, code: 6, type: :fixed64, elixir_type: "non_neg_integer()"),
+    proto_type(label: :TYPE_FIXED32, code: 7, type: :fixed32, elixir_type: "non_neg_integer()"),
+    proto_type(label: :TYPE_BOOL, code: 8, type: :bool, elixir_type: "boolean()"),
+    proto_type(label: :TYPE_STRING, code: 9, type: :string, elixir_type: "String.t()"),
+    proto_type(label: :TYPE_GROUP, code: 10, type: :group),
+    proto_type(label: :TYPE_MESSAGE, code: 11, type: :message, elixir_type: :dynamic),
+    proto_type(label: :TYPE_BYTES, code: 12, type: :bytes, elixir_type: "String.t()"),
+    proto_type(label: :TYPE_UINT32, code: 13, type: :uint32, elixir_type: "non_neg_integer()"),
+    proto_type(label: :TYPE_ENUM, code: 14, type: :enum, elixir_type: "integer()"),
+    proto_type(label: :TYPE_SFIXED32, code: 15, type: :sfixed32, elixir_type: "integer()"),
+    proto_type(label: :TYPE_SFIXED64, code: 16, type: :sfixed64, elixir_type: "integer()"),
+    proto_type(label: :TYPE_SINT32, code: 17, type: :sint32, elixir_type: "integer()"),
+    proto_type(label: :TYPE_SINT64, code: 18, type: :sint64, elixir_type: "integer()")
+  ]
 
-  def str_to_spec(1), do: "float()"
-  def str_to_spec(2), do: "float()"
-  def str_to_spec(3), do: "integer()"
-  def str_to_spec(4), do: "non_neg_integer()"
-  def str_to_spec(5), do: "integer()"
-  def str_to_spec(6), do: "non_neg_integer()"
-  def str_to_spec(7), do: "non_neg_integer()"
-  def str_to_spec(8), do: "boolean()"
-  def str_to_spec(9), do: "String.t()"
-  def str_to_spec(12), do: "String.t()"
-  def str_to_spec(13), do: "non_neg_integer()"
-  def str_to_spec(15), do: "integer()"
-  def str_to_spec(16), do: "integer()"
-  def str_to_spec(17), do: "integer()"
-  def str_to_spec(18), do: "integer()"
-  def str_to_spec(14), do: "integer()"
+  @spec find_type(pos_integer() | atom()) :: t()
+  defp find_type(data) do
+    predicate = case is_atom(data) do
+      true -> fn (type) -> proto_type(type, :label) === data end
+      false -> fn (type) -> proto_type(type, :code) === data end
+    end
+    case Enum.find(proto_types(), predicate) do
+      nil  -> proto_type()
+      type -> type
+    end
+  end
 
-  def str_to_spec(:TYPE_DOUBLE), do: "float()"
-  def str_to_spec(:TYPE_FLOAT), do: "float()"
-  def str_to_spec(:TYPE_INT64), do: "integer()"
-  def str_to_spec(:TYPE_UINT64), do: "non_neg_integer()"
-  def str_to_spec(:TYPE_INT32), do: "integer()"
-  def str_to_spec(:TYPE_FIXED64), do: "non_neg_integer()"
-  def str_to_spec(:TYPE_FIXED32), do: "non_neg_integer()"
-  def str_to_spec(:TYPE_BOOL), do: "boolean()"
-  def str_to_spec(:TYPE_STRING), do: "String.t()"
-  def str_to_spec(:TYPE_BYTES), do: "String.t()"
-  def str_to_spec(:TYPE_UINT32), do: "non_neg_integer()"
-  def str_to_spec(:TYPE_SFIXED32), do: "integer()"
-  def str_to_spec(:TYPE_SFIXED64), do: "integer()"
-  def str_to_spec(:TYPE_SINT32), do: "integer()"
-  def str_to_spec(:TYPE_SINT64), do: "integer()"
-  def str_to_spec(:TYPE_ENUM), do: "integer()"
+  def number_to_atom(data), do: data |> find_type() |> proto_type(:type)
 
-  def str_to_spec(11, type), do: "#{type}.t()"
-  def str_to_spec(:TYPE_MESSAGE, type), do: "#{type}.t()"
+  def str_to_spec(data, type) do
+    case find_type(data) |> proto_type(:elixir_type) do
+      :dynamic  -> "#{type}.t()"
+      type -> type
+    end
+  end
 end

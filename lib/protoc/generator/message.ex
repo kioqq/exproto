@@ -91,7 +91,7 @@ defmodule Protobuf.Protoc.Generator.Message do
         {fmt_type_name(f.name, longest_width), "{atom, any}"}
       end) ++
         Enum.map(fields, fn f ->
-          {fmt_type_name(f[:name], longest_width), fmt_type(f)}
+          {fmt_type_name(f[:name], longest_width), fmt_type(f) |> check_optional(f)}
         end)
 
     "  @type t :: %__MODULE__{\n" <>
@@ -112,9 +112,6 @@ defmodule Protobuf.Protoc.Generator.Message do
     String.pad_trailing("#{name}:", len + 1)
   end
 
-  defp fmt_type(%{opts: %{enum: true}, label: "repeated"}), do: "[integer()]"
-  defp fmt_type(%{opts: %{enum: true}}), do: "integer()"
-
   defp fmt_type(%{opts: %{map: true}, map: {{k_type, k_name}, {v_type, v_name}}}) do
     k_type = type_to_spec(k_type, k_name)
     v_type = type_to_spec(v_type, v_name)
@@ -129,9 +126,10 @@ defmodule Protobuf.Protoc.Generator.Message do
     "#{type_to_spec(type_num, type)}"
   end
 
-  defp type_to_spec(11, type), do: TypeUtil.str_to_spec(11, type)
-  defp type_to_spec(:TYPE_MESSAGE, type), do: TypeUtil.str_to_spec(:TYPE_MESSAGE, type)
-  defp type_to_spec(num, _), do: TypeUtil.str_to_spec(num)
+  defp check_optional(str_type, %{label: "required"}), do: str_type
+  defp check_optional(str_type, _), do: "#{str_type} | nil"
+
+  defp type_to_spec(num, type), do: TypeUtil.str_to_spec(num, type)
 
   def get_fields(ctx, desc) do
     oneofs = Enum.map(desc.oneof_decl, & &1.name)
