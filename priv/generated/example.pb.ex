@@ -12,9 +12,9 @@ defmodule TestPb.User do
   use Protobuf, syntax: :proto2
 
   @type t :: %__MODULE__{
-    id:       integer(),
+    id:       integer() | nil,
     id1:      integer(),
-    id2:      [integer()],
+    id2:      [integer()] | nil,
     id4:      integer(),
     id5:      float(),
     id6:      float(),
@@ -39,7 +39,7 @@ defmodule TestPb.User do
   field :id6, 6, required: true, type: :float
   field :id7, 7, required: true, type: :uint64
   field :id8, 8, required: true, type: :fixed64
-  field :id9, 9, required: true, type: :fixed64
+  field :id9, 9, required: true, type: :fixed32
   field :id10, 10, required: true, type: :bool
   field :id11, 11, required: true, type: :string
   field :id13, 13, required: true, type: :bytes
@@ -54,9 +54,9 @@ defmodule TestPb.User.Test do
   use Protobuf, syntax: :proto2
 
   @type t :: %__MODULE__{
-    enum:   integer(),
-    path:   String.t(),
-    method: String.t()
+    enum:   integer() | nil,
+    path:   String.t() | nil,
+    method: String.t() | nil
   }
   defstruct [:enum, :path, :method]
 
