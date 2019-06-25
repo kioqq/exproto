@@ -4,7 +4,7 @@ defmodule Protobuf.MixProject do
   def project do
     [
       app: :exproto,
-      version: "0.2.3",
+      version: "0.2.4",
       elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
