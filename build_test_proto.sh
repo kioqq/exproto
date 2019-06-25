@@ -1,0 +1,1 @@
+protoc -I ./priv/example --elixir_out=./priv/generated --plugin=protoc-gen-elixir=./protoc-gen-elixir ./priv/example/example.proto
